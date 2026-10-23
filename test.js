@@ -38,7 +38,8 @@ function encryptDictP(bytes) {
 function encryptDictHex(bytes, key) {
   const s = Buffer.from(bytes).toString('latin1');
   const dict = s.match(/\/Filter \/Standard[\s\S]{0,400}?>>/);
-  const value = dict && dict[0].match(new RegExp(`/${key} <([0-9A-Fa-f]+)>`));
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const value = dict && dict[0].match(new RegExp(`/${escapedKey}\\s*<([0-9A-Fa-f]+)>`));
   return value ? value[1].toLowerCase() : null;
 }
 
